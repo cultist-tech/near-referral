@@ -25,7 +25,7 @@ echo
 #near deploy --accountId mfight-nft_v2.testnet --wasmFile ../res/nft.wasm
 
 # uncomment the line below to deploy the other example contract
- near dev-deploy ./build/release/contract.wasm
+ near dev-deploy ../res/contract.wasm
 
 echo
 echo

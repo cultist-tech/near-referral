@@ -14,16 +14,7 @@ use near_sdk::{
 use near_sdk::borsh::{ self, BorshDeserialize, BorshSerialize };
 use near_sdk::collections::LazyOption;
 use near_sdk::json_types::U128;
-use mfight_sdk::referral::{
-    ReferralFeature,
-    ContractId,
-    AccountContractId,
-    InfluencerId,
-    InfluencerProgramId,
-    InfluencerRoyalty,
-    ProgramId,
-    ReferralInfo,
-};
+use mfight_sdk::referral::{ReferralFeature, ContractId, AccountContractId, InfluencerId, InfluencerProgramId, InfluencerRoyalty, ProgramId, ReferralInfo, ContractProgramId, ReferralProgramMetadata};
 use near_sdk::collections::{ LookupMap, TreeMap, UnorderedSet };
 use mfight_sdk::storage::StorageFeature;
 
@@ -38,6 +29,7 @@ enum StorageKey {
     InfluencersPrograms,
     CodeByProgram,
     InfoByCode,
+    ReferralProgramMetadata,
 }
 
 #[near_bindgen]
@@ -71,7 +63,8 @@ impl Contract {
                 StorageKey::ContractPrograms,
                 StorageKey::InfluencersPrograms,
                 StorageKey::CodeByProgram,
-                StorageKey::InfoByCode
+                StorageKey::InfoByCode,
+                StorageKey::ReferralProgramMetadata,
             ),
         };
 
@@ -91,7 +84,9 @@ impl Contract {
             pub referrals_by_contract: TreeMap<ContractId, UnorderedSet<AccountId>>,
             pub referrals_by_influencer: TreeMap<InfluencerId, UnorderedSet<AccountId>>,
             pub referrals_by_program: TreeMap<InfluencerProgramId, UnorderedSet<AccountId>>,
+
             pub royalty_by_program: LookupMap<InfluencerProgramId, InfluencerRoyalty>,
+            pub metadata_by_program: LookupMap<ContractProgramId, ReferralProgramMetadata>,
 
             pub programs_by_contract: TreeMap<
                 ContractId,
@@ -121,6 +116,7 @@ impl Contract {
             programs_by_influencer: old.referral.programs_by_influencer,
             code_by_program: old.referral.code_by_program,
             info_by_code: old.referral.info_by_code,
+            metadata_by_program: old.referral.metadata_by_program
         };
 
         Self {

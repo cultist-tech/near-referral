@@ -129,3 +129,4 @@ impl Contract {
 
 mfight_sdk::impl_referral_core!(Contract, referral, assert_access);
 mfight_sdk::impl_referral_enumeration!(Contract, referral);
+mfight_sdk::impl_referral_code!(Contract, referral, assert_access);
